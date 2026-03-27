@@ -23,27 +23,34 @@
 **当前阶段**：第1周 - 环境搭建与基础框架
 
 ## 项目结构
+
 ```
 pdm-project/
 ├── README.md                 # 项目总览
-├── plan/                     # 计划文件
-│   ├── 3-month-roadmap.md    # 三个月路线图
-│   ├── month-1-plan.md       # 第一个月详细计划
-│   └── weekly-plans/         # 周计划
-├── tasks/                    # 任务管理
-│   ├── backlog.md           # 待办任务
-│   ├── in-progress.md       # 进行中任务
-│   └── done.md              # 已完成任务
-├── progress/                 # 进度跟踪
-│   ├── learning-notes.md    # 学习笔记
-│   └── weekly-reviews.md    # 周度复盘
-├── resources/                # 学习资源
-│   ├── tech-stack.md        # 技术栈文档
-│   └── ai-prompts.md        # AI提示词库
-└── code/                    # 代码目录（稍后添加）
+├── code/                     # 代码目录
+│   ├── backend/             # FastAPI后端
+│   └── frontend/            # React前端
+├── docs/                    # 文档目录
+│   ├── prd/                 # 产品需求文档
+│   ├── design/              # 设计文档
+│   ├── architecture/        # 架构文档
+│   ├── adr/                 # 架构决策记录
+│   ├── requirements/         # 需求文档
+│   ├── test/                # 测试文档
+│   ├── project/             # 项目管理
+│   │   ├── plan/            # 计划文件
+│   │   ├── tasks/           # 任务管理
+│   │   └── progress/        # 进度跟踪
+│   ├── references/          # 参考资料
+│   ├── diagrams/            # 图表
+│   ├── specifications/      # 规格说明
+│   ├── vcs/                 # 版本控制
+│   └── mbse/                # MBSE分析
+└── start.sh                 # 启动脚本
 ```
 
 ## 快速开始
+
 1. **环境准备**：
    ```bash
    # 安装 Docker 和 Node.js
@@ -53,13 +60,20 @@ pdm-project/
    ```
 
 2. **开发计划**：
-   - 查看 `plan/month-1-plan.md` 了解第一个月任务
-   - 从 `tasks/backlog.md` 选择任务开始
-   - 在 `progress/learning-notes.md` 记录学习过程
+   - 查看 `docs/project/plan/month-1-plan.md` 了解第一个月任务
+   - 从 `docs/project/tasks/backlog.md` 选择任务开始
+   - 在 `docs/project/progress/learning-notes.md` 记录学习过程
 
 3. **学习资源**：
-   - 技术栈说明：`resources/tech-stack.md`
-   - AI提示词技巧：`resources/ai-prompts.md`
+   - 技术栈说明：`docs/references/tech-stack.md`
+   - AI提示词技巧：`docs/references/ai-prompts.md`
+
+4. **文档索引**：
+   - 项目路线图：`docs/project/plan/3-month-roadmap.md`
+   - 里程碑定义：`docs/project/milestones.md`
+   - 系统架构：`docs/architecture/system-architecture.md`
+   - API设计：`docs/design/api-design.md`
+   - 测试策略：`docs/test/test-strategy.md`
 
 ## 联系方式
 - **学习方式**：AI辅助开发 + 自主学习

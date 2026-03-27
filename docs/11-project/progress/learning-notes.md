@@ -7,6 +7,59 @@
 
 ---
 
+## 2026-03-27 项目启动与框架搭建
+
+### 学习时间
+- **开始**：09:00
+- **结束**：15:00
+- **总时长**：6小时
+
+### 学习内容
+1. Docker环境配置与多容器编排
+2. FastAPI框架核心组件学习
+3. React + Vite + TypeScript前端架构
+4. SQLAlchemy ORM与数据库设计
+5. MBSE系统工程方法论
+6. 项目文档体系建设
+
+### 关键知识点
+
+#### 技术
+- **Docker Compose**: 多服务编排，PostgreSQL + MinIO + FastAPI + React
+- **FastAPI**: 依赖注入、中间件、路由组织
+- **SQLAlchemy**: 模型定义、关系映射、UUID主键
+- **Zustand**: 前端状态管理
+- **模块化架构**: features/components/hooks/stores/types 结构
+
+#### 问题与解决方案
+- **问题**: PostgreSQL连接失败
+  - **原因**: Docker网络配置问题
+  - **解决**: 使用service名称代替localhost
+- **问题**: 前端@别名不工作
+  - **原因**: vite.config.ts路径配置错误
+  - **解决**: 使用path.resolve处理相对路径
+- **问题**: types/index.ts被错误覆盖
+  - **原因**: 产品接口丢失
+  - **解决**: 恢复Product接口定义
+
+### 技术亮点
+1. **UUID主键设计**: 使用uuid.uuid4()替代自增ID，支持分布式
+2. **模块化前端**: 清晰的features目录结构，便于扩展
+3. **CORS配置**: 灵活的跨域配置支持开发
+
+### 学习收获
+- 掌握了FastAPI完整开发流程
+- 理解了Docker多容器协作
+- 学会MBSE视角的文档体系建设
+- 熟悉了TypeScript类型定义最佳实践
+
+### 资源
+- FastAPI官方文档
+- React TypeScript Cheatsheet
+- Docker Compose最佳实践
+
+---
+
 ## 学习笔记模板
 
 ### 单次学习记录
