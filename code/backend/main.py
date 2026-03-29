@@ -13,7 +13,8 @@ from config import settings
 from database import engine, get_db
 import models
 import schemas
-from routers import products,from routers import auth
+from routers import products
+from routers import auth
 
 logging.basicConfig(
     level=logging.DEBUG if settings.debug else logging.INFO,
