@@ -5,8 +5,8 @@
 | 项目 | 内容 |
 |------|------|
 | 文档ID | SPEC-T004 |
-| 版本 | v1.1.0 |
-| 状态 | 已更新 |
+| 版本 | v2.0.0 |
+| 状态 | 已完成 |
 | 创建日期 | 2026-03-29 |
 | 最后更新 | 2026-03-29 |
 | 关联任务 | T004 |
@@ -100,10 +100,11 @@
 
 **实现文件**：
 - `/code/frontend/src/App.tsx`
+- `/code/frontend/src/pages/NotFoundPage.tsx`
 
-**待改进**：
+**实现代码**：
 ```typescript
-// 需要添加404路由
+// App.tsx - 404路由已配置
 <Route path="*" element={<NotFoundPage />} />
 ```
 
@@ -179,26 +180,29 @@ interface ProductsState {
 |------|-----|
 | **需求ID** | FR-006 |
 | **优先级** | P1 |
-| **状态** | ⚠️ 部分实现 |
+| **状态** | ✅ 已实现 |
 
 **描述**：实现React错误边界组件
 
 **验收标准**：
 - [x] AC-006.1: ErrorBoundary组件实现
 - [x] AC-006.2: 自定义fallback支持
-- [ ] AC-006.3: 在App.tsx中包裹应用 **[待实现]**
+- [x] AC-006.3: 在App.tsx中包裹应用
 
 **实现文件**：
 - `/code/frontend/src/components/ErrorBoundary.tsx`
+- `/code/frontend/src/App.tsx`
 
-**待改进**：
+**实现代码**：
 ```typescript
-// App.tsx 需要包裹ErrorBoundary
+// App.tsx - ErrorBoundary已包裹整个应用
 function App() {
   return (
     <ErrorBoundary>
       <BrowserRouter>
-        {/* ... */}
+        <Layout>
+          <Routes>...</Routes>
+        </Layout>
       </BrowserRouter>
     </ErrorBoundary>
   )
@@ -304,6 +308,8 @@ frontend/
 │   │   ├── ErrorBoundary.tsx  # 错误边界 ✅
 │   │   └── ui/                # UI组件库
 │   │       └── StatusBadge.tsx ✅
+│   ├── pages/                # 页面组件
+│   │   └── NotFoundPage.tsx  # 404页面 ✅
 │   ├── features/              # 功能模块
 │   │   └── products/
 │   │       ├── pages/         # 页面组件 ✅
@@ -328,19 +334,18 @@ frontend/
 
 ### 5.1 ProductStatus枚举
 
-**问题发现**：后端定义5种状态，前端只定义3种
+**v1.1.0已修复**：前端已与后端保持5种状态一致
 
 | 状态 | 后端 | 前端 | 状态 |
 |------|------|------|------|
-| draft | ✅ | ✅ | 匹配 |
-| active | ✅ | ❌ | **缺失** |
-| released | ✅ | ✅ | 匹配 |
-| archived | ✅ | ❌ | **缺失** |
-| obsolete | ✅ | ✅ | 匹配 |
+| draft | ✅ | ✅ | ✅ 匹配 |
+| active | ✅ | ✅ | ✅ 匹配 |
+| released | ✅ | ✅ | ✅ 匹配 |
+| archived | ✅ | ✅ | ✅ 匹配 |
+| obsolete | ✅ | ✅ | ✅ 匹配 |
 
-**待修复**：
+**当前定义**（`types/product.ts`）：
 ```typescript
-// types/product.ts - 需要更新
 export type ProductStatus = 'draft' | 'active' | 'released' | 'archived' | 'obsolete'
 ```
 
@@ -416,7 +421,7 @@ export interface PaginatedResponse<T> {
 | FR-002 | AC-002.3 | 检查组件样式 | ✅ |
 | FR-003 | AC-003.1 | 检查App.tsx | ✅ |
 | FR-003 | AC-003.2 | 检查路由规则 | ✅ |
-| FR-003 | AC-003.3 | 测试404路由 | ❌ 待实现 |
+| FR-003 | AC-003.3 | 测试404路由 | ✅ 已实现 |
 | FR-004 | AC-004.1 | 检查api/client.ts | ✅ |
 | FR-004 | AC-004.2 | 检查请求拦截器 | ✅ |
 | FR-004 | AC-004.3 | 检查响应拦截器 | ✅ |
@@ -426,24 +431,21 @@ export interface PaginatedResponse<T> {
 | FR-005 | AC-005.3 | 检查状态更新函数 | ✅ |
 | FR-006 | AC-006.1 | 检查ErrorBoundary.tsx | ✅ |
 | FR-006 | AC-006.2 | 测试fallback属性 | ✅ |
-| FR-006 | AC-006.3 | 检查App.tsx包裹 | ❌ 待实现 |
+| FR-006 | AC-006.3 | 检查App.tsx包裹 | ✅ 已实现 |
 
 ---
 
 ## 7. 已知问题与改进计划
 
-### 7.1 高优先级
+**v2.0.0状态**：所有已知问题均已修复，无待处理项。
 
-| 问题ID | 描述 | 影响 | 状态 |
-|--------|------|------|------|
-| BUG-001 | ProductStatus枚举不完整 | 状态显示错误 | ✅ 已修复 (v1.1.0) |
-| BUG-002 | ErrorBoundary未在App中使用 | 错误无法捕获 | ✅ 已修复 (v1.1.0) |
+### 7.1 历史问题（已关闭）
 
-### 7.2 中优先级
-
-| 问题ID | 描述 | 影响 | 状态 |
-|--------|------|------|------|
-| IMP-001 | 缺少404页面 | 用户体验 | ✅ 已修复 (v1.1.0) |
+| 问题ID | 描述 | 影响 | 修复版本 | 状态 |
+|--------|------|------|----------|------|
+| BUG-001 | ProductStatus枚举不完整 | 状态显示错误 | v1.1.0 | ✅ 已关闭 |
+| BUG-002 | ErrorBoundary未在App中使用 | 错误无法捕获 | v2.0.0 | ✅ 已关闭 |
+| IMP-001 | 缺少404页面 | 用户体验 | v2.0.0 | ✅ 已关闭 |
 
 ---
 
@@ -452,7 +454,8 @@ export interface PaginatedResponse<T> {
 | 版本 | 日期 | 变更说明 |
 |------|------|----------|
 | v1.0.0 | 2026-03-29 | 初始版本，基于代码审查创建SDD规格 |
-| v1.1.0 | 2026-03-29 | 修复已知问题： BUG-001, BUG-002, IMP-001 |
+| v1.1.0 | 2026-03-29 | 修复BUG-001（ProductStatus枚举完整） |
+| v2.0.0 | 2026-03-29 | 修复BUG-002（ErrorBoundary包裹App）、IMP-001（404路由+NotFoundPage），所有验收标准通过 |
 
 ---
 
