@@ -67,8 +67,8 @@ CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 INSERT INTO users (username, email, hashed_password, full_name, role)
 VALUES (
     'admin',
-    'admin@pdm.local',
-    '$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW', -- bcrypt hash for 'admin123'
+    'admin@pdm-system.example.com',
+    '$2b$12$WWzDM6oN6IibEwk0auPEV.z53rx7pbs/EwUvOxJY4A8h6T.Fg1p2W', -- bcrypt hash for 'admin123'
     'Administrator',
     'admin'
 ) ON CONFLICT (username) DO NOTHING;

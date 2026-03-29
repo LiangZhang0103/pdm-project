@@ -1,6 +1,6 @@
 from typing import Generator
 from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPBearer
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from jose import JWTError, jwt
 
@@ -14,14 +14,15 @@ oauth2_scheme = HTTPBearer(auto_error=False)
 
 
 def get_current_user(
-    db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)
+    db: Session = Depends(get_db),
+    credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme),
 ) -> models.User:
     """
     获取当前认证用户
 
     Args:
         db: 数据库会话
-        token: JWT token字符串
+        credentials: HTTP Bearer认证凭据
 
     Returns:
         User: 当前认证用户对象
@@ -35,12 +36,14 @@ def get_current_user(
         headers={"WWW-Authenticate": "Bearer"},
     )
 
-    if token is None:
+    if credentials is None:
         raise credentials_exception
 
     try:
         payload = jwt.decode(
-            token, settings.jwt_secret_key, algorithms=[settings.jwt_algorithm]
+            credentials.credentials,
+            settings.jwt_secret_key,
+            algorithms=[settings.jwt_algorithm],
         )
         username: str = payload.get("sub")
         if username is None:
