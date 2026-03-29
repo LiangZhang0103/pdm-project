@@ -301,9 +301,59 @@
    - 经验：代码变更后立即测试验证
 
 ### 后续建议
-- [ ] 添加单元测试
+- [x] 添加单元测试（T009已完成）
 - [ ] 实现完整的JWT认证流程
 - [ ] 添加API版本管理
+
+---
+
+## T009: 后端基础测试框架（2026-03-29）
+
+### 完成状态: ✅ 全部通过
+
+### 测试结果
+- **14/14 测试通过**
+- **覆盖率: 95%**（总计438语句，仅20行未覆盖）
+- 覆盖详情：
+  - config.py: 100%
+  - models.py: 100%
+  - schemas.py: 100%
+  - deps.py: 100%
+  - test_health.py: 100%
+  - test_products.py: 100%
+  - routers/products.py: 88%
+  - main.py: 85%
+
+### 测试内容
+1. **test_health.py**（4个测试）
+   - 健康检查返回200
+   - 响应结构验证
+   - 状态值验证
+   - 根路由测试
+
+2. **test_products.py**（10个测试）
+   - CRUD完整流程（创建/列表/获取/更新/删除）
+   - 重复产品编码检测
+   - 产品不存在返回404
+   - 必填字段验证
+   - 无效状态值验证
+
+### 解决的技术问题
+1. **SQLite UUID兼容性**
+   - 问题：SQLite不支持PostgreSQL UUID类型
+   - 解决：创建 `SQLiteUUID(TypeDecorator)` 适配器，UUID↔String自动转换
+
+2. **认证依赖Mock**
+   - 问题：测试环境无真实JWT认证
+   - 解决：通过 `app.dependency_overrides` 注入测试用户（admin角色）
+
+3. **状态枚举验证**
+   - 问题：`status: str` 接受任意字符串，无验证
+   - 解决：使用 `Literal["draft","active","released","archived","obsolete"]` 类型约束
+
+### 提交记录
+- `497f719`: test(T009): 添加pytest基础测试框架
+- `6af02c4`: fix(T009): 修复测试兼容性问题
 
 ---
 *记录完成的任务不仅是为了跟踪进度，更是为了复盘学习和成长。*
