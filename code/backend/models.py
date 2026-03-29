@@ -8,7 +8,6 @@ from sqlalchemy import (
     JSON,
     ForeignKey,
     DECIMAL,
-    Enum as SQLAlchemyEnum,
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
