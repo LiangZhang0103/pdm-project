@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 from typing import List, Optional
+from uuid import UUID
 
 from database import get_db
 import models
@@ -32,11 +33,23 @@ def read_products(
 
 @router.get("/{product_id}", response_model=schemas.Product)
 def read_product(
-    product_id: str,
+    product_id: UUID,
     db: Session = Depends(get_db),
 ):
-    """Get a specific product by ID."""
-    product = db.query(models.Product).filter(models.Product.id == product_id).first()
+    """
+    获取单个产品
+
+    Args:
+        product_id: 产品UUID
+
+    Returns:
+        Product: 产品对象
+    """
+    # 将UUID转换为字符串用于数据库查询
+    product_id_str = str(product_id)
+    product = (
+        db.query(models.Product).filter(models.Product.id == product_id_str).first()
+    )
     if not product:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"
@@ -72,14 +85,25 @@ def create_product(
 
 @router.put("/{product_id}", response_model=schemas.Product)
 def update_product(
-    product_id: str,
+    product_id: UUID,
     product_update: schemas.ProductUpdate,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(deps.get_current_active_user),
 ):
-    """Update an existing product."""
+    """
+    更新产品
+
+    Args:
+        product_id: 产品UUID
+        product_update: 产品更新数据
+        current_user: 当前认证用户
+
+    Returns:
+        Product: 更新后的产品对象
+    """
+    product_id_str = str(product_id)
     db_product = (
-        db.query(models.Product).filter(models.Product.id == product_id).first()
+        db.query(models.Product).filter(models.Product.id == product_id_str).first()
     )
     if not db_product:
         raise HTTPException(
@@ -113,12 +137,22 @@ def update_product(
 
 @router.delete("/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_product(
-    product_id: str,
+    product_id: UUID,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(deps.get_current_admin_user),
 ):
-    """Delete a product (admin only)."""
-    product = db.query(models.Product).filter(models.Product.id == product_id).first()
+    """
+    删除产品（管理员权限）
+
+    Args:
+        product_id: 产品UUID
+        db: 数据库会话
+        current_user: 当前认证用户（需是管理员）
+    """
+    product_id_str = str(product_id)
+    product = (
+        db.query(models.Product).filter(models.Product.id == product_id_str).first()
+    )
     if not product:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"
