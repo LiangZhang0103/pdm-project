@@ -1,4 +1,4 @@
-export type ProductStatus = 'draft' | 'released' | 'obsolete'
+export type ProductStatus = 'draft' | 'active' | 'released' | 'archived' | 'obsolete'
 
 export interface Product {
   id: string

@@ -3,7 +3,9 @@ import { cn } from '@/lib/utils'
 
 const statusStyles: Record<ProductStatus, string> = {
   draft: 'bg-yellow-100 text-yellow-800',
+  active: 'bg-blue-100 text-blue-800',
   released: 'bg-green-100 text-green-800',
+  archived: 'bg-purple-100 text-purple-800',
   obsolete: 'bg-gray-100 text-gray-800',
 }
 
