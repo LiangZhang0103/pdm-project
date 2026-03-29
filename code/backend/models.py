@@ -14,12 +14,12 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
 from sqlalchemy.orm import Mapped, mapped_column
 import uuid
+import enum
 
 from database import Base
 
 
-class ProductStatus(str, SQLAlchemyEnum):
-    """产品状态枚举"""
+class ProductStatus(enum.Enum):
     DRAFT = "draft"
     ACTIVE = "active"
     RELEASED = "released"
@@ -27,9 +27,7 @@ class ProductStatus(str, SQLAlchemyEnum):
     OBSOLETE = "obsolete"
 
 
-class UserRole(str, SQLAlchemyEnum):
-    """用户角色枚举"""
-
+class UserRole(enum.Enum):
     USER = "user"
     ADMIN = "admin"
 
@@ -58,7 +56,7 @@ class Product(Base):
     description = Column(Text)
     category = Column(String(100))
     version = Column(Integer, default=1)
-    status = Column(ProductStatus, default=ProductStatus.DRAFT)
+    status = Column(String(50), default="draft")
     created_by = Column(String(100))
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
@@ -67,7 +65,7 @@ class Product(Base):
 class Document(Base):
     """
     文档数据模型
-    
+
     Attributes:
         id: 文档唯一标识符（UUID）
         filename: 文件名
@@ -82,8 +80,9 @@ class Document(Base):
         uploaded_at: 上传时间
         ocr_text: OCR识别的文本内容
     """
+
     __tablename__ = "documents"
-    id = Column(UUID(as_uuid=True), primary_key=True, default=枚举未定义）错误
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     filename = Column(String(255), nullable=False)
     filepath = Column(String(500))
     file_size = Column(Integer)
@@ -92,10 +91,10 @@ class Document(Base):
         UUID(as_uuid=True), ForeignKey("products.id", ondelete="CASCADE")
     )
     version = Column(Integer, default=1)
-    status = Column(ProductStatus, default="active")
+    status = Column(String(50), default="active")
     doc_metadata = Column(JSON)
     uploaded_by = Column(String(100))
-    uploaded错误-修复中枚举未定义的问题
+    uploaded_at = Column(DateTime, default=func.now())
 
 
 class BOMItem(Base):
@@ -152,7 +151,7 @@ class User(Base):
     email = Column(String(255), unique=True, nullable=False)
     hashed_password = Column(String(255), nullable=False)
     full_name = Column(String(200))
-     role = Column(UserRole, default=UserRole.USER)
-     is_active = Column(Boolean, default=True)
+    role = Column(String(50), default="user")
+    is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=func.now())
     last_login = Column(DateTime)
