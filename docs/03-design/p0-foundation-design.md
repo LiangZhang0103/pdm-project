@@ -4,9 +4,9 @@
 
 | 项目 | 内容 |
 |------|------|
-| 版本 | v1.0.0 |
-| 状态 | 已完成 |
-| 日期 | 2026-03-27 |
+| 版本 | v1.1.0 |
+| 状态 | 已更新 |
+| 日期 | 2026-03-29 |
 | 作者 | AI辅助开发 |
 | 关联任务 | T001, T002, T003, T004 |
 
@@ -628,6 +628,25 @@ alembic==1.12.1
 | 产品路由 | `/code/backend/routers/products.py` | 已完成 |
 | 依赖清单 | `/code/backend/requirements.txt` | 已完成 |
 
+### 4.9 Bug修复记录（2026-03-29）
+
+#### 问题描述
+- **问题1**：models.py 第86行语法错误 - `default=枚举未定义）错误`
+- **问题2**：models.py 第98行语法错误 - `uploaded错误-修复中枚举未定义的问题`
+- **问题3**：models.py 第155行缩进错误
+- **问题4**：PostgreSQL枚举类型 `LookupError: 'released' is not among the defined enum values`
+
+#### 解决方案
+1. 修复语法错误：将 `default=uuid.uuid4` 正确赋值
+2. 修复缩进错误：正确对齐列定义
+3. 将所有SQLAlchemy枚举列改为String(50)类型：
+   - `Product.status`: `Column(String(50), default="draft")`
+   - `Document.status`: `Column(String(50), default="active")`
+   - `User.role`: `Column(String(50), default="user")`
+
+#### 修复提交
+- Commit: `1f9551f` - fix: 修复models.py枚举和语法错误
+
 ---
 
 ## 5. T004: React前端基础框架
@@ -1003,6 +1022,7 @@ export interface ProductCreate {
 | 版本 | 日期 | 变更说明 |
 |------|------|----------|
 | v1.0.0 | 2026-03-27 | 初始版本，完成T001-T004设计文档 |
+| v1.1.0 | 2026-03-29 | T003 bug修复：models.py枚举类型修复 |
 
 ---
 
