@@ -122,6 +122,38 @@ GET /products/?skip=0&limit=100&category=Electronics&status=draft
 - [x] AC-005.3: 需要管理员权限（get_current_admin_user）
 - [x] AC-005.4: 级联删除关联文档和BOM条目
 
+**代码证据**（`routers/products.py`）：
+```python
+@router.delete("/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_product(
+    product_id: UUID,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(deps.get_current_admin_user),  # Admin-only
+):
+```
+
+**请求/响应示例**：
+
+创建产品：
+```json
+// POST /products/
+// Request:
+{ "product_code": "PRD-001", "name": "传感器组件A", "category": "Electronics" }
+// Response 201:
+{ "id": "a1b2c3d4-...", "product_code": "PRD-001", "name": "传感器组件A",
+  "status": "draft", "version": 1, "created_by": "admin", "created_at": "...", "updated_at": "..." }
+```
+
+更新产品：
+```json
+// PUT /products/{id}
+// Request:
+{ "name": "传感器组件A-V2", "status": "released" }
+// Response 200:
+{ "id": "a1b2c3d4-...", "product_code": "PRD-001", "name": "传感器组件A-V2",
+  "status": "released", "version": 1, ... }
+```
+
 ---
 
 ## 3. 非功能需求规格
@@ -196,9 +228,74 @@ GET /products/?skip=0&limit=100&category=Electronics&status=draft
 |------|------|
 | `/code/backend/routers/products.py` | 产品路由和业务逻辑 |
 
+**代码证据（DELETE权限）**：
+```python
+# routers/products.py - delete_product函数签名
+@router.delete("/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_product(
+    product_id: UUID,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(deps.get_current_admin_user),  # ← Admin权限
+):
+```
+
 ---
 
-## 7. 变更记录
+## 7. 请求/响应示例
+
+### 7.1 创建产品
+```
+POST /products/
+Content-Type: application/json
+
+{
+  "product_code": "P-1001",
+  "name": "电机控制器 A",
+  "description": "无刷直流电机",
+  "category": "Electronics"
+}
+```
+
+**成功响应** (201)：
+```json
+{
+  "id": "3fa85f64c-5cbc-45d3-a...",
+  "product_code": "P-1001",
+  "name": "电机控制器 A",
+  "status": "draft",
+  "version": 1,
+  "created_by": "testuser",
+  "created_at": "2026-03-29T10:00:00Z",
+  "updated_at": "2026-03-29T10:00:00Z"
+}
+```
+
+### 7.2 更新产品
+```
+PUT /products/{product_id}
+Content-Type: application/json
+
+{
+  "name": "电机控制器 A（更新版）",
+  "status": "active"
+}
+```
+
+---
+
+## 8. 实现文件
+
+| 文件 | 职责 |
+|------|------|
+| `/code/backend/routers/products.py` | 产品路由和业务逻辑 |
+
+---
+
+## 9. 变更记录
+
+| 版本 | 日期 | 变更说明 |
+|------|------|----------|
+| v1.0.0 | 2026-03-29 | 初始版本，| v1.0.1 | 2026-03-29 | 审查修复：补充DELETE权限代码证据、请求/响应示例 |
 
 | 版本 | 日期 | 变更说明 |
 |------|------|----------|

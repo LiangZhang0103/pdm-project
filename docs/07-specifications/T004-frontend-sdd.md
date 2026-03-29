@@ -28,6 +28,8 @@
 
 ### 1.3 术语定义
 
+> 完整术语和共享数据类型定义参见 [SDD共享数据字典](./SDD-data-dictionary.md)。
+
 | 术语 | 定义 |
 |------|------|
 | SDD | Specification-Driven Development，规格驱动开发 |
@@ -224,9 +226,9 @@ function App() {
 **描述**：所有代码使用TypeScript类型
 
 **验收标准**：
-- [x] AC-N001.1: `tsconfig.json`严格模式开启
-- [x] AC-N002.2: 无`any`类型使用
-- [x] AC-N003.3: 类型定义完整（`src/types/`）
+- [x] AC-NFR-001.1: `tsconfig.json`严格模式开启
+- [x] AC-NFR-001.2: 无`any`类型使用
+- [x] AC-NFR-001.3: 类型定义完整（`src/types/`）
 
 **TypeScript配置规格**：
 ```json

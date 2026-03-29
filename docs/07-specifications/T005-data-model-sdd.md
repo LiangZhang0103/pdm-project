@@ -81,7 +81,26 @@
 - [x] AC-002.2: 外键关联 `products.id`（CASCADE删除）
 - [x] AC-002.3: 文件元数据（filename, filepath, file_size, mime_type）
 - [x] AC-002.4: JSON元数据列（doc_metadata）
-- [x] AC-002.5: OCR文本存储字段
+- [x] AC-002.5: OCR文本存储字段（ocr_text）
+- [x] AC-002.6: 向量嵌入字段（embedding），用于AI语义搜索
+
+**完整字段规格**：
+
+| 字段 | 类型 | 约束 | 默认值 |
+|------|------|------|--------|
+| id | UUID | PK | gen_random_uuid() |
+| filename | String(255) | NOT NULL | - |
+| filepath | String(500) | NULL | - |
+| file_size | Integer | NULL | - |
+| mime_type | String(100) | NULL | - |
+| product_id | UUID | FK→products(id) CASCADE | - |
+| version | Integer | - | 1 |
+| status | String(50) | - | "active" |
+| doc_metadata | JSON | NULL | - |
+| uploaded_by | String(100) | NULL | - |
+| uploaded_at | DateTime | - | now() |
+| ocr_text | Text | NULL | - |
+| embedding | Text | NULL | - |
 
 ---
 

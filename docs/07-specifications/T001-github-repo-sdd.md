@@ -27,6 +27,8 @@
 
 ### 1.3 术语定义
 
+> 完整术语和共享数据类型定义参见 [SDD共享数据字典](./SDD-data-dictionary.md)。
+
 | 术语 | 定义 |
 |------|------|
 | SDD | Specification-Driven Development，规格驱动开发 |
