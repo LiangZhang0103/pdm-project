@@ -58,7 +58,7 @@ class DocumentCreate(DocumentBase):
 class Document(DocumentBase):
     id: uuid.UUID
     version: int
-    metadata: Optional[dict]
+    doc_metadata: Optional[dict] = Field(None, alias="metadata")
     uploaded_by: Optional[str]
     uploaded_at: datetime
     ocr_text: Optional[str]

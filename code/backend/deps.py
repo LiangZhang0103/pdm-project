@@ -9,7 +9,6 @@ from database import get_db
 import models
 import schemas
 
-
 # OAuth2 scheme for token extraction
 oauth2_scheme = HTTPBearer(auto_error=False)
 
@@ -30,6 +29,29 @@ def get_current_user(
     Raises:
         HTTPException: 401 - 当token无效或用户不存在时
     """
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+    if token is None:
+        raise credentials_exception
+
+    try:
+        payload = jwt.decode(
+            token, settings.jwt_secret_key, algorithms=[settings.jwt_algorithm]
+        )
+        username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+    except JWTError:
+        raise credentials_exception
+
+    user = db.query(models.User).filter(models.User.username == username).first()
+    if user is None:
+        raise credentials_exception
+    return user
 
 
 def get_current_active_user(
@@ -47,6 +69,12 @@ def get_current_active_user(
     Raises:
         HTTPException: 400 - 当用户未激活时
     """
+    if not current_user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Inactive user",
+        )
+    return current_user
 
 
 def get_current_admin_user(
@@ -64,3 +92,9 @@ def get_current_admin_user(
     Raises:
         HTTPException: 403 - 当用户不是管理员时
     """
+    if current_user.role != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="The user doesn't have enough privileges",
+        )
+    return current_user

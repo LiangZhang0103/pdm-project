@@ -1,16 +1,25 @@
+import logging
 from datetime import datetime
-from fastapi import FastAPI, Depends, HTTPException
+from typing import Dict
+
+from fastapi import FastAPI, Depends, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 import sqlalchemy
 from sqlalchemy.exc import SQLAlchemyError
-from typing import Dict
 
 from config import settings
 from database import engine, get_db
 import models
 import schemas
-from routers import products
+from routers import products,from routers import auth
+
+logging.basicConfig(
+    level=logging.DEBUG if settings.debug else logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
+logger = logging.getLogger(__name__)
 
 # Create database tables
 models.Base.metadata.create_all(bind=engine)
@@ -94,11 +103,8 @@ async def root() -> Dict[str, str]:
     }
 
 
-# from routers import documents, bom, auth
-# app.include_router(auth.router, prefix="/auth", tags=["authentication"])
 app.include_router(products.router, prefix="/products", tags=["products"])
-# app.include_router(documents.router, prefix="/documents", tags=["documents"])
-# app.include_router(bom.router, prefix="/bom", tags=["bom"])
+app.include_router(auth.router, prefix="/auth", tags=["authentication"])
 
 if __name__ == "__main__":
     import uvicorn

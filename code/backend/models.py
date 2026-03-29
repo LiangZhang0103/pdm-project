@@ -78,6 +78,7 @@ class Document(Base):
         uploaded_by: 上传人用户名
         uploaded_at: 上传时间
         ocr_text: OCR识别的文本内容
+        embedding: 向量嵌入数据
     """
 
     __tablename__ = "documents"
@@ -94,6 +95,8 @@ class Document(Base):
     doc_metadata = Column(JSON)
     uploaded_by = Column(String(100))
     uploaded_at = Column(DateTime, default=func.now())
+    ocr_text = Column(Text)
+    embedding = Column(Text)
 
 
 class BOMItem(Base):
