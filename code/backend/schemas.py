@@ -1,7 +1,9 @@
 from pydantic import BaseModel, Field, EmailStr
-from typing import Optional, List
+from typing import Optional, List, Literal
 from datetime import datetime
 import uuid
+
+ProductStatus = Literal["draft", "active", "released", "archived", "obsolete"]
 
 
 # Shared properties
@@ -16,7 +18,7 @@ class ProductBase(BaseSchema):
     name: str = Field(..., min_length=1, max_length=200)
     description: Optional[str] = None
     category: Optional[str] = None
-    status: str = "draft"
+    status: ProductStatus = "draft"
 
 
 class ProductCreate(ProductBase):
@@ -28,7 +30,7 @@ class ProductUpdate(BaseSchema):
     name: Optional[str] = Field(None, min_length=1, max_length=200)
     description: Optional[str] = None
     category: Optional[str] = None
-    status: Optional[str] = None
+    status: Optional[ProductStatus] = None
 
 
 class Product(ProductBase):
